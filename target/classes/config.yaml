@@ -1,0 +1,14 @@
+config:
+  RC:
+    url: "https://demoqa.com/"
+    databaseUser: "user123"
+    databasePassword: "pass123"
+    browserName: "FIREFOX"
+    envName: "RC"
+  TC:
+    url: "https://demoqa.com/"
+    databaseUser: "user12345"
+    databasePassword: "pass12345"
+    browserName: "FIREFOX"
+    envName: "TC"
+activeEnvironment: "TC"
