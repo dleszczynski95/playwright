@@ -15,6 +15,7 @@ public class Config {
     private String email;
     private String currentAddress;
     private String permanentAddress;
+    private String wrongPasswordError;
 
     public enum Browsers {
         CHROME, FIREFOX
