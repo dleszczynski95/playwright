@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.ElementsPage;
 import pages.MainPage;
 
 import java.util.List;
@@ -30,7 +29,5 @@ public class MainPageTest extends BaseTest {
         AssertJUnit.assertEquals(mainPage.getListOfCards(), List.of("Elements", "Forms", "Alerts, Frame & Windows",
                 "Widgets", "Interactions", "Book Store Application"));
         logger.info("Checked list of cards");
-
-        ElementsPage elementsPage = mainPage.goTo(MainPage.Options.ELEMENTS);
     }
 }

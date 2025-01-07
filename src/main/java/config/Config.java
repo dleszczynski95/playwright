@@ -11,6 +11,10 @@ public class Config {
     private String databasePassword;
     private Browsers browserName;
     private ProjectEnvironments envName;
+    private String fullName;
+    private String email;
+    private String currentAddress;
+    private String permanentAddress;
 
     public enum Browsers {
         CHROME, FIREFOX

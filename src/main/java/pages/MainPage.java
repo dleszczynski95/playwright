@@ -51,5 +51,6 @@ public class MainPage extends BasePage {
 
         private final String label;
         private final Class<?> clazz;
+        public static final List<Options> VALUES = List.of(values());
     }
 }
