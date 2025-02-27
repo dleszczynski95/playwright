@@ -15,6 +15,7 @@ import pages.ElementsLazyPage;
 import pages.ElementsPage;
 import pages.MainPage;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ElementsLazyTests extends BaseTest {
@@ -35,7 +36,7 @@ public class ElementsLazyTests extends BaseTest {
     @Test
     public void mainElementsProperlyDisplayed() {
         AssertJUnit.assertEquals(elementsPage.getLeftMenu().getExpandedItem(), MainPage.Options.ELEMENTS.getLabel());
-        AssertJUnit.assertEquals(elementsPage.getLeftMenu().getItems(), ElementsPage.Items.VALUES.stream().map(ElementsPage.Items::getUiLabel).toList());
+        AssertJUnit.assertEquals(elementsPage.getLeftMenu().getItems(), Arrays.stream(ElementsPage.Items.values()).map(ElementsPage.Items::getUiLabel).toList());
         logger.info("Checked main elements");
     }
 
