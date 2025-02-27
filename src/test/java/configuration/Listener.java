@@ -83,11 +83,7 @@ public class Listener implements ITestListener {
 
     @Override
     public void onFinish(ITestContext context) {
-        try {
-            getAllMethods(context);
-        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        testList.forEach(System.out::println);
     }
 
     private void printTestsStatus() {

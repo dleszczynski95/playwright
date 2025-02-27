@@ -11,8 +11,8 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 
 public class MainPage extends BasePage {
-    private final static Logger logger = LoggerFactory.getLogger(MainPage.class);
-    protected final String cardsSelector = ".category-cards .card-body";
+    private static final Logger logger = LoggerFactory.getLogger(MainPage.class);
+    protected static final String CARDS_SELECTOR = ".category-cards .card-body";
 
     public MainPage(Page page) {
         super(page);
@@ -20,12 +20,12 @@ public class MainPage extends BasePage {
     }
 
     public List<String> getListOfCards() {
-        Locator cards = page.locator(cardsSelector);
+        Locator cards = page.locator(CARDS_SELECTOR);
         return cards.all().stream().map(Locator::textContent).toList();
     }
 
     public <T> T goTo(Options option) {
-        page.locator(cardsSelector).filter(new Locator.FilterOptions().setHasText(option.label)).click();
+        page.locator(CARDS_SELECTOR).filter(new Locator.FilterOptions().setHasText(option.label)).click();
         try {
             Constructor<?> constructor = option.getClazz().getConstructor(Page.class);
             return (T) constructor.newInstance(page);
@@ -35,7 +35,7 @@ public class MainPage extends BasePage {
     }
 
     public void waitForPage() {
-        page.waitForCondition(() -> page.locator(cardsSelector).count() == 6, timeout);
+        page.waitForCondition(() -> page.locator(CARDS_SELECTOR).count() == 6, timeout);
         logger.info("User should be on main page");
     }
 
@@ -52,6 +52,5 @@ public class MainPage extends BasePage {
 
         private final String label;
         private final Class<?> clazz;
-        public static final List<Options> VALUES = List.of(values());
     }
 }

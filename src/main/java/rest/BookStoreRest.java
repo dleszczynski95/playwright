@@ -12,11 +12,13 @@ import objects.User;
 import java.nio.charset.StandardCharsets;
 
 public class BookStoreRest {
-    private final static String REGISTER_ENDPOINT = "https://demoqa.com/Account/v1/User";
+    private static final String REGISTER_ENDPOINT = "https://demoqa.com/Account/v1/User";
     private final APIRequestContext requestContext;
 
     public BookStoreRest() {
-        requestContext = Playwright.create().request().newContext();
+        try (Playwright playwright = Playwright.create()) {
+            requestContext = playwright.request().newContext();
+        }
     }
 
     public APIResponse registerUser(User user) {

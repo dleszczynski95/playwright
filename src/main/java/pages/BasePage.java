@@ -6,11 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class BasePage {
-    private final static Logger logger = LoggerFactory.getLogger(BasePage.class);
+    private final Logger logger = LoggerFactory.getLogger(BasePage.class);
     protected Page page;
     Page.WaitForConditionOptions timeout;
 
-    public BasePage(Page page) {
+    protected BasePage(Page page) {
         this.page = page;
         page.setDefaultTimeout(5000);
         timeout = new Page.WaitForConditionOptions().setTimeout(5000);

@@ -9,7 +9,7 @@ import pages.BasePage;
 import java.util.List;
 
 public class LeftMenu extends BasePage {
-    private final static Logger logger = LoggerFactory.getLogger(LeftMenu.class);
+    private final Logger logger = LoggerFactory.getLogger(LeftMenu.class);
     protected String itemsListSelector = ".show li.btn";
     protected String elementGroupSelector = ".element-group";
 
@@ -18,6 +18,7 @@ public class LeftMenu extends BasePage {
     }
 
     public void selectItem(String itemName) {
+        logger.info("Select item {}", itemName);
         clickWithText(itemsListSelector, itemName);
     }
 

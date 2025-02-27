@@ -104,6 +104,5 @@ public class ElementsLazyPage extends BasePage {
         DYNAMIC_PROPERTIES("Dynamic Properties");
 
         private final String uiLabel;
-        public final static List<Items> VALUES = List.of(values());
     }
 }
