@@ -1,6 +1,5 @@
 package rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.playwright.APIRequestContext;
@@ -14,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 
 public class BookStoreRest {
     private final static String REGISTER_ENDPOINT = "https://demoqa.com/Account/v1/User";
-    private APIRequestContext requestContext;
+    private final APIRequestContext requestContext;
 
     public BookStoreRest() {
         requestContext = Playwright.create().request().newContext();

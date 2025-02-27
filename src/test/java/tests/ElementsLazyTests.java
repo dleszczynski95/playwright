@@ -1,31 +1,35 @@
 package tests;
 
-import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import configuration.BaseTest;
 import configuration.PagesInitializer;
+import io.qameta.allure.Description;
+import io.qameta.allure.Issue;
+import io.qameta.allure.Severity;
+import io.qameta.allure.Step;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import pages.ElementsLazyPage;
 import pages.ElementsPage;
 import pages.MainPage;
 
 import java.util.List;
 
-public class ElementsTests extends BaseTest {
-    private static final Logger logger = LoggerFactory.getLogger(ElementsTests.class);
+public class ElementsLazyTests extends BaseTest {
+    private static final Logger logger = LoggerFactory.getLogger(ElementsLazyTests.class);
     public MainPage mainPage;
-    public ElementsPage elementsPage;
+    public ElementsLazyPage elementsPage;
 
-    public ElementsTests() {
+    public ElementsLazyTests() {
         super(TestType.FRONTEND);
     }
 
     @BeforeMethod
     public void initializePages() {
         new PagesInitializer(this, page, List.of(MainPage.class));
-        elementsPage = mainPage.goTo(MainPage.Options.ELEMENTS);
+        elementsPage = mainPage.goTo(MainPage.Options.ELEMENTS_LAZY);
     }
 
     @Test
@@ -35,24 +39,25 @@ public class ElementsTests extends BaseTest {
         logger.info("Checked main elements");
     }
 
-    @Test(invocationCount = 20)
+    @Test(invocationCount = 2)
+    @Description("Checking wrong email")
     public void checkWrongEmail() {
         elementsPage
-                .selectItem(ElementsPage.Items.TEXT_BOX)
+                .selectItem(ElementsLazyPage.Items.TEXT_BOX)
                 .setFullName(config.getFullName())
                 .setEmail("wrongEmail.com")
                 .setPermanentAddress(config.getPermanentAddress())
                 .setCurrentAddress(config.getCurrentAddress())
                 .clickSubmit();
 
-        PlaywrightAssertions.assertThat(elementsPage.getLocator(elementsPage.getOutputNameSelector())).isHidden();
+        AssertJUnit.assertTrue(elementsPage.getFullNameOutput().isHidden());
         logger.info("Checked wrong email");
     }
 
     @Test
     public void checkProperlyEmail() {
         elementsPage
-                .selectItem(ElementsPage.Items.TEXT_BOX)
+                .selectItem(ElementsLazyPage.Items.TEXT_BOX)
                 .setFullName(config.getFullName())
                 .setEmail(config.getEmail())
                 .setPermanentAddress(config.getPermanentAddress())

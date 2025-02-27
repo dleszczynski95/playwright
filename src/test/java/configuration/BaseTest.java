@@ -6,14 +6,16 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import config.Config;
 import config.YamlReader;
+import io.qameta.allure.testng.AllureTestNg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.*;
 import pages.MainPage;
 
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+
+@Listeners({Listener.class, AllureTestNg.class})
 public abstract class BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
     protected Config config;
@@ -28,6 +30,8 @@ public abstract class BaseTest {
 
     @BeforeTest
     public void setUp() {
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
+
         YamlReader yamlReader = new YamlReader("config.yaml");
         config = yamlReader.getActiveConfig();
         logger.info(config.getConfigLog());

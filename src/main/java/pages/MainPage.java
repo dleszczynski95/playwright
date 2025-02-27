@@ -43,6 +43,7 @@ public class MainPage extends BasePage {
     @Getter
     public enum Options {
         ELEMENTS("Elements", ElementsPage.class),
+        ELEMENTS_LAZY("Elements", ElementsLazyPage.class),
         FORMS("Forms", FormsPage.class),
         ALERTS_FRAME_WINDOWS("Alerts, Frame & Windows", AlertsPage.class),
         WIDGETS("Widgets", WidgetsPage.class),
