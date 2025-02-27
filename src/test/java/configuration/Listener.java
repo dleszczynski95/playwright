@@ -53,21 +53,21 @@ public class Listener implements ITestListener {
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        logger.info("{} Test: {}{}", PASSED, testName, RESET);
+        logger.info("{} Test: {}{}\n", PASSED, testName, RESET);
         testList.stream().filter(t -> t.getTestName().equals(testName)).findFirst().orElseThrow().setTestResult(TestObject.TestResult.PASSED);
         printTestsStatus();
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        logger.info("{} Test: {}{}", FAILED, testName, RESET);
+        logger.info("{} Test: {}{}\n", FAILED, testName, RESET);
         testList.stream().filter(t -> t.getTestName().equals(testName)).findFirst().orElseThrow().setTestResult(TestObject.TestResult.FAILED);
         printTestsStatus();
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
-        logger.info("{} Test: {}{}", IGNORED, testName, RESET);
+        logger.info("{} Test: {}{}\n", IGNORED, testName, RESET);
         testList.stream().filter(t -> t.getTestName().equals(testName)).findFirst().orElseThrow().setTestResult(TestObject.TestResult.SKIPPED);
         printTestsStatus();
     }
@@ -91,10 +91,10 @@ public class Listener implements ITestListener {
     }
 
     private void printTestsStatus() {
-        logger.info("                Test Progress:");
-        System.out.println("            -----------------------------");
+        logger.info("           Test Progress:");
+        System.out.println(" ---------------------------------------");
         testList.forEach(System.out::println);
-        System.out.println("            -----------------------------");
+        System.out.println("---------------------------------------\n");
     }
 
     private void getAllMethods(ITestContext context) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {

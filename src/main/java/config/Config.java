@@ -3,6 +3,7 @@ package config;
 import lombok.Data;
 
 import java.lang.reflect.Field;
+import java.util.Locale;
 
 @Data
 public class Config {
@@ -28,11 +29,17 @@ public class Config {
     public String getConfigLog() {
         StringBuilder sb = new StringBuilder();
         Field[] fields = this.getClass().getDeclaredFields();
+        String fieldName;
         sb.append("------------------ CONFIG ------------------").append("\n");
         for (Field field : fields) {
+            fieldName = field.getName();
             field.setAccessible(true);
             try {
-                sb.append("          ").append(field.getName()).append(" : ").append(field.get(this)).append("\n");
+                sb
+                        .append("          ")
+                        .append(fieldName).append(" : ")
+                        .append(fieldName.toLowerCase(Locale.ROOT).contains("pass") ? "####" : field.get(this))
+                        .append("\n");
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }

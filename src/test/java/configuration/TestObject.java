@@ -24,6 +24,6 @@ public class TestObject {
 
     @Override
     public String toString() {
-        return "                 " + testResult.color + "[" + testResult.sign + "] " + testName + RESET;
+        return "          " + testResult.color + "[" + testResult.sign + "] " + testName + RESET;
     }
 }
