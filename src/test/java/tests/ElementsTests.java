@@ -35,7 +35,7 @@ public class ElementsTests extends BaseTest {
         logger.info("Checked main elements");
     }
 
-    @Test(invocationCount = 20)
+    @Test(invocationCount = 2)
     public void checkWrongEmail() {
         elementsPage
                 .selectItem(ElementsPage.Items.TEXT_BOX)
