@@ -14,8 +14,6 @@ import org.testng.annotations.Test;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +31,6 @@ public class Listener implements ITestListener {
     private static final String IGNORED = "\u001B[33m[" + SKIP_SIGN + " IGNORED]";
     public static final String RESET = "\u001B[0m";
     private int providerIndex = 1;
-
 
     @Override
     public void onTestStart(ITestResult result) {
@@ -65,15 +62,17 @@ public class Listener implements ITestListener {
     @Override
     public void onTestFailure(ITestResult result) {
         logger.info("{} Test: {}{}\n", FAILED, testName, RESET);
-        saveScreenshot(BaseTest.getPage());
+        Page page = (Page) result.getAttribute("page");
+        if (BaseTest.getTestType().equals(BaseTest.TestType.FRONTEND)) saveScreenshot(page);
         testList.stream().filter(t -> t.getTestName().equals(testName)).findFirst().orElseThrow().setTestResult(TestObject.TestResult.FAILED);
         printTestsStatus();
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
+        Page page = (Page) result.getAttribute("page");
         logger.info("{} Test: {}{}\n", IGNORED, testName, RESET);
-        saveScreenshot(BaseTest.getPage());
+        if (BaseTest.getTestType().equals(BaseTest.TestType.FRONTEND)) saveScreenshot(page);
         testList.stream().filter(t -> t.getTestName().equals(testName)).findFirst().orElseThrow().setTestResult(TestObject.TestResult.SKIPPED);
         printTestsStatus();
     }
@@ -101,17 +100,14 @@ public class Listener implements ITestListener {
 
     @Attachment(value = "Screenshot on Failure", type = "image/png")
     public byte[] saveScreenshot(Page page) {
-        try {
-            Path screenshotPath = Path.of("screenshot.png");
-            page.screenshot(new Page.ScreenshotOptions().setPath(screenshotPath));
-            return Files.readAllBytes(screenshotPath);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        if (page != null) {
+            return page.screenshot();
         }
+        return null;
     }
 
-    private void getAllMethods(ITestContext context) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    private void getAllMethods(ITestContext context) throws
+            InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         testList = new ArrayList<>();
         for (ITestNGMethod method : context.getAllTestMethods()) {
             int providerSize = getProviderSize(method.getConstructorOrMethod().getMethod());
@@ -135,7 +131,8 @@ public class Listener implements ITestListener {
         printTestsStatus();
     }
 
-    private int getProviderSize(Method method) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    private int getProviderSize(Method method) throws
+            NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Test testAnnotation = method.getAnnotation(Test.class);
         if (testAnnotation == null || testAnnotation.dataProvider().isEmpty()) {
             return 0;

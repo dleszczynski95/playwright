@@ -11,6 +11,7 @@ import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 import pages.MainPage;
 
@@ -25,12 +26,12 @@ public abstract class BaseTest {
     protected Config config;
     protected static Playwright playwright;
     protected static Browser browser;
-    private final TestType testType;
     @Getter
-    protected static Page page;
+    protected static TestType testType;
+    protected Page page;
 
     public BaseTest(TestType testType) {
-        this.testType = testType;
+        BaseTest.testType = testType;
     }
 
     @BeforeTest
@@ -46,11 +47,12 @@ public abstract class BaseTest {
     }
 
     @BeforeMethod
-    public void setupTest() {
+    public void setupTest(ITestResult result) {
         if (browser != null) {
             page = browser.newPage();
             page.navigate(config.getUrl());
             new MainPage(page);
+            result.setAttribute("page", page);
         }
     }
 
@@ -59,6 +61,7 @@ public abstract class BaseTest {
         if (page != null) {
             page.close();
         }
+
     }
 
     @AfterTest

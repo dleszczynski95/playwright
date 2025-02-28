@@ -13,7 +13,7 @@ public class ListenersTests extends BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(ListenersTests.class);
 
     public ListenersTests() {
-        super(TestType.BACKEND);
+        super(TestType.FRONTEND);
     }
 
     @BeforeMethod
