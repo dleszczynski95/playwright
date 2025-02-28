@@ -20,6 +20,7 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <aspectj.version>1.9.22</aspectj.version>
+        <commons.io.version>2.18.0</commons.io.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -34,6 +35,12 @@
     </dependencyManagement>
     <dependencies>
         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-log</artifactId>
             <version>0.24.3</version>
@@ -44,7 +51,6 @@
             <version>${aspectj.version}</version>
             <scope>runtime</scope>
         </dependency>
-
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
@@ -97,7 +103,11 @@
             <artifactId>allure-java-commons</artifactId>
             <version>${allure.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-attachments</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

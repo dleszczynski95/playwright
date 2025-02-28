@@ -1,6 +1,8 @@
 package configuration;
 
 
+import com.microsoft.playwright.Page;
+import io.qameta.allure.Attachment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
@@ -12,6 +14,8 @@ import org.testng.annotations.Test;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +65,7 @@ public class Listener implements ITestListener {
     @Override
     public void onTestFailure(ITestResult result) {
         logger.info("{} Test: {}{}\n", FAILED, testName, RESET);
+        saveScreenshot(BaseTest.getPage());
         testList.stream().filter(t -> t.getTestName().equals(testName)).findFirst().orElseThrow().setTestResult(TestObject.TestResult.FAILED);
         printTestsStatus();
     }
@@ -68,6 +73,7 @@ public class Listener implements ITestListener {
     @Override
     public void onTestSkipped(ITestResult result) {
         logger.info("{} Test: {}{}\n", IGNORED, testName, RESET);
+        saveScreenshot(BaseTest.getPage());
         testList.stream().filter(t -> t.getTestName().equals(testName)).findFirst().orElseThrow().setTestResult(TestObject.TestResult.SKIPPED);
         printTestsStatus();
     }
@@ -91,6 +97,18 @@ public class Listener implements ITestListener {
         System.out.println(" ---------------------------------------");
         testList.forEach(System.out::println);
         System.out.println("---------------------------------------\n");
+    }
+
+    @Attachment(value = "Screenshot on Failure", type = "image/png")
+    public byte[] saveScreenshot(Page page) {
+        try {
+            Path screenshotPath = Path.of("screenshot.png");
+            page.screenshot(new Page.ScreenshotOptions().setPath(screenshotPath));
+            return Files.readAllBytes(screenshotPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void getAllMethods(ITestContext context) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {

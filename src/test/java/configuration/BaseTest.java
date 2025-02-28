@@ -7,11 +7,15 @@ import com.microsoft.playwright.Playwright;
 import config.Config;
 import config.YamlReader;
 import io.qameta.allure.testng.AllureTestNg;
+import lombok.Getter;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.*;
 import pages.MainPage;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
@@ -22,15 +26,17 @@ public abstract class BaseTest {
     protected static Playwright playwright;
     protected static Browser browser;
     private final TestType testType;
-    protected Page page;
+    @Getter
+    protected static Page page;
 
     public BaseTest(TestType testType) {
         this.testType = testType;
     }
 
     @BeforeTest
-    public void setUp() {
+    public void setUp() throws IOException {
         System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
+        FileUtils.cleanDirectory(new File("allure-results"));
 
         YamlReader yamlReader = new YamlReader("config.yaml");
         config = yamlReader.getActiveConfig();
