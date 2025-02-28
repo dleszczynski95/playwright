@@ -16,9 +16,7 @@ public class BookStoreRest {
     private final APIRequestContext requestContext;
 
     public BookStoreRest() {
-        try (Playwright playwright = Playwright.create()) {
-            requestContext = playwright.request().newContext();
-        }
+        requestContext = Playwright.create().request().newContext();
     }
 
     public APIResponse registerUser(User user) {
