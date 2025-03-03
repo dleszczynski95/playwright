@@ -2,6 +2,8 @@ package configuration;
 
 
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.ScreenshotType;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.testng.annotations.Test;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +66,7 @@ public class Listener implements ITestListener {
     public void onTestFailure(ITestResult result) {
         logger.info("{} Test: {}{}\n", FAILED, testName, RESET);
         Page page = (Page) result.getAttribute("page");
-        if (BaseTest.getTestType().equals(BaseTest.TestType.FRONTEND)) saveScreenshot(page);
+        if (BaseTest.getTestType().equals(BaseTest.TestType.FRONTEND)) saveScreenshot(page, testName);
         testList.stream().filter(t -> t.getTestName().equals(testName)).findFirst().orElseThrow().setTestResult(TestObject.TestResult.FAILED);
         printTestsStatus();
     }
@@ -72,7 +75,7 @@ public class Listener implements ITestListener {
     public void onTestSkipped(ITestResult result) {
         Page page = (Page) result.getAttribute("page");
         logger.info("{} Test: {}{}\n", IGNORED, testName, RESET);
-        if (BaseTest.getTestType().equals(BaseTest.TestType.FRONTEND)) saveScreenshot(page);
+        if (BaseTest.getTestType().equals(BaseTest.TestType.FRONTEND)) saveScreenshot(page, testName);
         testList.stream().filter(t -> t.getTestName().equals(testName)).findFirst().orElseThrow().setTestResult(TestObject.TestResult.SKIPPED);
         printTestsStatus();
     }
@@ -99,9 +102,10 @@ public class Listener implements ITestListener {
     }
 
     @Attachment(value = "Screenshot on Failure", type = "image/png")
-    public byte[] saveScreenshot(Page page) {
+    public byte[] saveScreenshot(Page page, String name) {
         if (page != null) {
-            return page.screenshot();
+            byte[] screenshot = page.screenshot(new Page.ScreenshotOptions().setFullPage(true));
+            Allure.getLifecycle().addAttachment(name, "image/png", "png", screenshot);
         }
         return null;
     }
