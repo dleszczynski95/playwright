@@ -2,7 +2,6 @@ package configuration;
 
 
 import com.microsoft.playwright.Page;
-import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Listener implements ITestListener {
     private static final Logger logger = LoggerFactory.getLogger(Listener.class);
@@ -57,26 +55,23 @@ public class Listener implements ITestListener {
     @Override
     public void onTestSuccess(ITestResult result) {
         logger.info("{} Test: {}{}\n", PASSED, testName, RESET);
-        testList.stream().filter(t -> t.getTestName().equals(testName)).findFirst().orElseThrow().setTestResult(TestObject.TestResult.PASSED);
-        printTestsStatus();
+        updateTestResult(TestObject.TestResult.PASSED);
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
         logger.info("{} Test: {}{}\n", FAILED, testName, RESET);
         Page page = (Page) result.getAttribute("page");
-        if (BaseTest.getTestType().equals(BaseTest.TestType.FRONTEND)) saveScreenshot(page, testName);
-        testList.stream().filter(t -> t.getTestName().equals(testName)).findFirst().orElseThrow().setTestResult(TestObject.TestResult.FAILED);
-        printTestsStatus();
+        if (BaseTest.getTestType().equals(BaseTest.TestType.FRONTEND)) saveScreenshot(page);
+        updateTestResult(TestObject.TestResult.FAILED);
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
         Page page = (Page) result.getAttribute("page");
         logger.info("{} Test: {}{}\n", IGNORED, testName, RESET);
-        if (BaseTest.getTestType().equals(BaseTest.TestType.FRONTEND)) saveScreenshot(page, testName);
-        testList.stream().filter(t -> t.getTestName().equals(testName)).findFirst().orElseThrow().setTestResult(TestObject.TestResult.SKIPPED);
-        printTestsStatus();
+        if (BaseTest.getTestType().equals(BaseTest.TestType.FRONTEND)) saveScreenshot(page);
+        updateTestResult(TestObject.TestResult.SKIPPED);
     }
 
     @Override
@@ -101,15 +96,8 @@ public class Listener implements ITestListener {
     }
 
     @Attachment(value = "Screenshot on Failure", type = "image/png")
-    public byte[] saveScreenshot(Page page, String name) {
-        if (page != null) {
-            String uuid = UUID.randomUUID().toString();
-            Allure.getLifecycle().startTestCase(uuid);
-            byte[] screenshot = page.screenshot(new Page.ScreenshotOptions().setFullPage(true));
-            Allure.getLifecycle().addAttachment(name, "image/png", "png", screenshot);
-            Allure.getLifecycle().stopTestCase(uuid);
-        }
-        return null;
+    public byte[] saveScreenshot(Page page) {
+        return page.screenshot(new Page.ScreenshotOptions().setFullPage(true));
     }
 
     private void getAllMethods(ITestContext context) throws
@@ -153,5 +141,10 @@ public class Listener implements ITestListener {
         Object[][] data = (Object[][]) dataProviderMethod.invoke(instance);
 
         return data.length;
+    }
+
+    private void updateTestResult(TestObject.TestResult result) {
+        testList.stream().filter(t -> t.getTestName().equals(testName)).findFirst().orElseThrow().setTestResult(result);
+        printTestsStatus();
     }
 }

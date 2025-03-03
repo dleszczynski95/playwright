@@ -34,6 +34,10 @@ public abstract class BaseTest {
         BaseTest.testType = testType;
     }
 
+    public void setPage(ITestResult result, Page page) {
+        result.setAttribute("page", page);
+    }
+
     @BeforeTest
     public void setUp() throws IOException {
         System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
@@ -50,6 +54,7 @@ public abstract class BaseTest {
     public void setupTest(ITestResult result) {
         if (browser != null) {
             page = browser.newPage();
+            setPage(result, page);
             page.navigate(config.getUrl());
             new MainPage(page);
             result.setAttribute("page", page);
