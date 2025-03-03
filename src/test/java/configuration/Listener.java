@@ -2,7 +2,6 @@ package configuration;
 
 
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.ScreenshotType;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import org.slf4j.Logger;
@@ -16,9 +15,9 @@ import org.testng.annotations.Test;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Listener implements ITestListener {
     private static final Logger logger = LoggerFactory.getLogger(Listener.class);
@@ -104,8 +103,11 @@ public class Listener implements ITestListener {
     @Attachment(value = "Screenshot on Failure", type = "image/png")
     public byte[] saveScreenshot(Page page, String name) {
         if (page != null) {
+            String uuid = UUID.randomUUID().toString();
+            Allure.getLifecycle().startTestCase(uuid);
             byte[] screenshot = page.screenshot(new Page.ScreenshotOptions().setFullPage(true));
             Allure.getLifecycle().addAttachment(name, "image/png", "png", screenshot);
+            Allure.getLifecycle().stopTestCase(uuid);
         }
         return null;
     }
