@@ -5,7 +5,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.InputStream;
 
 public class YamlReader {
-    private Environments environment;
+    private final Environments environment;
 
     public YamlReader(String yamlFilePath) {
         Yaml yaml = new Yaml();

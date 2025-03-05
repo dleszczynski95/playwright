@@ -53,6 +53,7 @@ public abstract class BaseTest {
     @BeforeMethod
     public void setupTest(ITestResult result) {
         if (browser != null) {
+            logger.info("Setup Page");
             page = browser.newPage();
             setPage(result, page);
             page.navigate(config.getUrl());

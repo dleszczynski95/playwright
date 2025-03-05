@@ -2,6 +2,7 @@ package pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import io.qameta.allure.Step;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ public class MainPage extends BasePage {
         return cards.all().stream().map(Locator::textContent).toList();
     }
 
+    @Step("Go to {}")
     public <T> T goTo(Options option) {
         page.locator(CARDS_SELECTOR).filter(new Locator.FilterOptions().setHasText(option.label)).click();
         try {

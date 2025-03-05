@@ -34,6 +34,7 @@ public class ElementsLazyTests extends BaseTest {
     }
 
     @Test
+    @Description("Checking main elements")
     public void mainElementsProperlyDisplayed() {
         AssertJUnit.assertEquals(elementsPage.getLeftMenu().getExpandedItem(), MainPage.Options.ELEMENTS.getLabel());
         AssertJUnit.assertEquals(elementsPage.getLeftMenu().getItems(), Arrays.stream(ElementsPage.Items.values()).map(ElementsPage.Items::getUiLabel).toList());
@@ -56,6 +57,7 @@ public class ElementsLazyTests extends BaseTest {
     }
 
     @Test
+    @Description("Checking properly email")
     public void checkProperlyEmail() {
         elementsPage
                 .selectItem(ElementsLazyPage.Items.TEXT_BOX)

@@ -3,6 +3,7 @@ package tests;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import configuration.BaseTest;
 import configuration.PagesInitializer;
+import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.AssertJUnit;
@@ -30,6 +31,7 @@ public class ElementsTests extends BaseTest {
     }
 
     @Test
+    @Description("Checking main elements")
     public void mainElementsProperlyDisplayed() {
         AssertJUnit.assertEquals(elementsPage.getLeftMenu().getExpandedItem(), MainPage.Options.ELEMENTS.getLabel());
         AssertJUnit.assertEquals(elementsPage.getLeftMenu().getItems(), Arrays.stream(ElementsPage.Items.values()).map(ElementsPage.Items::getUiLabel).toList());
@@ -37,6 +39,7 @@ public class ElementsTests extends BaseTest {
     }
 
     @Test(invocationCount = 2)
+    @Description("Checking wrong email")
     public void checkWrongEmail() {
         elementsPage
                 .selectItem(ElementsPage.Items.TEXT_BOX)
@@ -51,6 +54,7 @@ public class ElementsTests extends BaseTest {
     }
 
     @Test
+    @Description("Checking properly email")
     public void checkProperlyEmail() {
         elementsPage
                 .selectItem(ElementsPage.Items.TEXT_BOX)

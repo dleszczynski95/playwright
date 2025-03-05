@@ -3,6 +3,7 @@ package tests;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.playwright.APIResponse;
 import configuration.BaseTest;
+import io.qameta.allure.Description;
 import objects.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ public class BookStoreTests extends BaseTest {
     }
 
     @Test
+    @Description("Checking creating exists user")
     public void createUserThatExists() {
         String userName = RandomStringUtils.randomAlphabetic(10);
         User user = new User(userName, "Haslo12345!@", "email@email.com");
@@ -41,6 +43,7 @@ public class BookStoreTests extends BaseTest {
     }
 
     @Test
+    @Description("Checking creating user without username")
     public void createUserWithoutUserName() {
         User user = new User("", "Haslo12345!@", "email@email.com");
         APIResponse apiResponse = rest.registerUser(user);
@@ -52,6 +55,7 @@ public class BookStoreTests extends BaseTest {
     }
 
     @Test
+    @Description("Checking creating user without password")
     public void createUserWithoutPassword() {
         User user = new User(RandomStringUtils.randomAlphabetic(10), "", "email@email.com");
         APIResponse apiResponse = rest.registerUser(user);
@@ -63,6 +67,7 @@ public class BookStoreTests extends BaseTest {
     }
 
     @Test(dataProvider = "passwords")
+    @Description("Checking creating user without different password")
     public void checkCreatingWithDifferentPassword(Boolean isProperly, String password) {
         User user = new User(RandomStringUtils.randomAlphabetic(10), password, "email@email.com");
         APIResponse apiResponse = rest.registerUser(user);

@@ -2,6 +2,7 @@ package tests;
 
 import configuration.BaseTest;
 import configuration.PagesInitializer;
+import io.qameta.allure.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.AssertJUnit;
@@ -25,6 +26,7 @@ public class MainPageTest extends BaseTest {
     }
 
     @Test
+    @Description("Checking main elements")
     public void checkMainElements() {
         AssertJUnit.assertEquals(mainPage.getListOfCards(), List.of("Elements", "Forms", "Alerts, Frame & Windows",
                 "Widgets", "Interactions", "Book Store Application"));

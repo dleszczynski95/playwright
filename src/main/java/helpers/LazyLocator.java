@@ -11,11 +11,13 @@ public class LazyLocator {
     private final Supplier<Locator> supplier;
     private final Locator locator;
     private final Page page;
+    private final Page.WaitForConditionOptions timeout;
 
     public LazyLocator(Supplier<Locator> supplier, Page page) {
         this.supplier = supplier;
         this.locator = supplier.get();
         this.page = page;
+        timeout = new Page.WaitForConditionOptions().setTimeout(5000);
     }
 
     public void click() {
@@ -46,7 +48,19 @@ public class LazyLocator {
         locator.press(key);
     }
 
+    public String getAttribute(String name) {
+        return locator.getAttribute(name);
+    }
+
+    public void waitForAttribute(String attribute, String value) {
+        page.waitForCondition(() -> locator.getAttribute(attribute).equals(value), timeout);
+    }
+
     public String getText() {
         return locator.textContent();
+    }
+
+    public String getComputedStyle(String cssValue) {
+        return locator.evaluate("el => getComputedStyle(el)." + cssValue).toString();
     }
 }

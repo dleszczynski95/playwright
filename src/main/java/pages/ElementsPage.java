@@ -1,13 +1,12 @@
 package pages;
 
 import com.microsoft.playwright.Page;
+import io.qameta.allure.Step;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pages.components.LeftMenu;
-
-import java.util.List;
 
 @Getter
 public class ElementsPage extends BasePage {
@@ -31,31 +30,37 @@ public class ElementsPage extends BasePage {
         logger.info("User is on Elements Page");
     }
 
+    @Step("Select item {0}")
     public ElementsPage selectItem(Items item) {
         leftMenu.selectItem(item.getUiLabel());
         return this;
     }
 
+    @Step("Set full name {0}")
     public ElementsPage setFullName(String fullName) {
         fillInput(fullNameSelector, fullName);
         return this;
     }
 
+    @Step("Set email {0}")
     public ElementsPage setEmail(String email) {
         fillInput(emailSelector, email);
         return this;
     }
 
+    @Step("Set current address {0}")
     public ElementsPage setCurrentAddress(String address) {
         fillInput(currentAddressSelector, address);
         return this;
     }
 
+    @Step("Set permanent address {0}")
     public ElementsPage setPermanentAddress(String address) {
         fillInput(permanentAddressSelector, address);
         return this;
     }
 
+    @Step("Click submit")
     public ElementsPage clickSubmit() {
         click(submitSelector);
         return this;

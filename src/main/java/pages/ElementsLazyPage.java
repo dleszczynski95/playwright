@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pages.components.LeftMenu;
 
-import java.util.List;
-
 @Getter
 public class ElementsLazyPage extends BasePage {
     private static final Logger logger = LoggerFactory.getLogger(ElementsLazyPage.class);
@@ -34,7 +32,7 @@ public class ElementsLazyPage extends BasePage {
         logger.info("User is on Elements Page");
     }
 
-    @Step("Selecting item {0}")
+    @Step("Select item {0}")
     public ElementsLazyPage selectItem(Items item) {
         leftMenu.selectItem(item.getUiLabel());
         return this;
@@ -46,21 +44,25 @@ public class ElementsLazyPage extends BasePage {
         return this;
     }
 
+    @Step("Set email {0}")
     public ElementsLazyPage setEmail(String email) {
         emailInput.fill(email);
         return this;
     }
 
+    @Step("Set current address {0}")
     public ElementsLazyPage setCurrentAddress(String address) {
         currentAddressInput.fill(address);
         return this;
     }
 
+    @Step("Set permanent address {0}")
     public ElementsLazyPage setPermanentAddress(String address) {
         permanentAddressInput.fill(address);
         return this;
     }
 
+    @Step("Click submit")
     public ElementsLazyPage clickSubmit() {
         submitButton.click();
         return this;
