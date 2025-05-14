@@ -49,7 +49,7 @@ public class ElementsTests extends BaseTest {
                 .setCurrentAddress(config.getCurrentAddress())
                 .clickSubmit();
 
-        PlaywrightAssertions.assertThat(elementsPage.getLocator(elementsPage.getOutputNameSelector())).isHidden();
+        PlaywrightAssertions.assertThat(elementsPage.getOutputNameElement()).isHidden();
         logger.info("Checked wrong email");
     }
 

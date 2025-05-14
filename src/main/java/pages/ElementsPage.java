@@ -1,6 +1,9 @@
 package pages;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import helpers.FindBy;
+import helpers.PlaywrightDecorator;
 import io.qameta.allure.Step;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,20 +15,38 @@ import pages.components.LeftMenu;
 public class ElementsPage extends BasePage {
     private static final Logger logger = LoggerFactory.getLogger(ElementsPage.class);
 
-    protected String fullNameSelector = "#userName";
-    protected String emailSelector = "#userEmail";
-    protected String currentAddressSelector = "#currentAddress";
-    protected String permanentAddressSelector = "#permanentAddress";
-    protected String submitSelector = "#submit";
-    protected String outputNameSelector = "#output #name";
-    protected String outputEmailSelector = "#output #email";
-    protected String outputCurrentAddressSelector = "#output #currentAddress";
-    protected String outputPermanentAddressSelector = "#output #permanentAddress";
+    @FindBy(css = "#userName")
+    protected Locator fullNameElement;
+
+    @FindBy(css = "#userEmail")
+    protected Locator emailElement;
+
+    @FindBy(css = "#currentAddress")
+    protected Locator currentAddressElement;
+
+    @FindBy(css = "#permanentAddress")
+    protected Locator permanentAddressElement;
+
+    @FindBy(css = "#submit")
+    protected Locator submitElement;
+
+    @FindBy(css = "#output #name")
+    protected Locator outputNameElement;
+
+    @FindBy(css = "#output #email")
+    protected Locator outputEmailElement;
+
+    @FindBy(css = "#output #currentAddress")
+    protected Locator outputCurrentAddressElement;
+
+    @FindBy(css = "#output #permanentAddress")
+    protected Locator outputPermanentAddressElement;
 
     private final LeftMenu leftMenu;
 
     public ElementsPage(Page page) {
         super(page);
+        PlaywrightDecorator.initElements(page, this);
         leftMenu = new LeftMenu(page);
         logger.info("User is on Elements Page");
     }
@@ -38,48 +59,48 @@ public class ElementsPage extends BasePage {
 
     @Step("Set full name {0}")
     public ElementsPage setFullName(String fullName) {
-        fillInput(fullNameSelector, fullName);
+        fillInput(fullNameElement, fullName);
         return this;
     }
 
     @Step("Set email {0}")
     public ElementsPage setEmail(String email) {
-        fillInput(emailSelector, email);
+        fillInput(emailElement, email);
         return this;
     }
 
     @Step("Set current address {0}")
     public ElementsPage setCurrentAddress(String address) {
-        fillInput(currentAddressSelector, address);
+        fillInput(currentAddressElement, address);
         return this;
     }
 
     @Step("Set permanent address {0}")
     public ElementsPage setPermanentAddress(String address) {
-        fillInput(permanentAddressSelector, address);
+        fillInput(permanentAddressElement, address);
         return this;
     }
 
     @Step("Click submit")
     public ElementsPage clickSubmit() {
-        click(submitSelector);
+        click(submitElement);
         return this;
     }
 
     public String getOutputName() {
-        return getText(outputNameSelector).split(":")[1].strip();
+        return getText(outputNameElement).split(":")[1].strip();
     }
 
     public String getOutputEmail() {
-        return getText(outputEmailSelector).split(":")[1].strip();
+        return getText(outputEmailElement).split(":")[1].strip();
     }
 
     public String getOutputCurrentAddress() {
-        return getText(outputCurrentAddressSelector).split(":")[1].strip();
+        return getText(outputCurrentAddressElement).split(":")[1].strip();
     }
 
     public String getOutputPermanentAddress() {
-        return getText(outputPermanentAddressSelector).split(":")[1].strip();
+        return getText(outputPermanentAddressElement).split(":")[1].strip();
     }
 
 

@@ -21,6 +21,11 @@ public abstract class BasePage {
         logger.info("Clicked on locator: {}", locator);
     }
 
+    public void click(Locator locator) {
+        locator.click();
+        logger.info("Clicked on locator: {}", locator);
+    }
+
     public void clickWithText(String locator, String text) {
         getLocator(locator).filter(new Locator.FilterOptions().setHasText(text)).click();
         logger.info("Clicked on locator: {}, with name: {}", locator, text);
@@ -39,7 +44,16 @@ public abstract class BasePage {
         logger.info("Fill {} with value: {}", locator, value);
     }
 
+    public void fillInput(Locator locator, String value) {
+        locator.fill(value);
+        logger.info("Fill {} with value: {}", locator, value);
+    }
+
     public String getText(String locator) {
         return getLocator(locator).textContent();
+    }
+
+    public String getText(Locator locator) {
+        return locator.textContent();
     }
 }
